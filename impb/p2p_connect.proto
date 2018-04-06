@@ -1,0 +1,40 @@
+
+syntax = "proto3";
+
+
+enum enum_p2p_type {
+    enum_p2p_type_connect_request = 0;     // 发起p2p连接请求
+    enum_p2p_type_post_ip  = 2;    //  接受者 上报自己的信息
+}
+
+message p2p_connect {
+     enum_p2p_type type = 1;
+    bytes body = 2;
+}
+
+message p2pconnect_request {
+     uint32 uid  = 1;
+     string ip = 2;  // 自己的ip
+     int32  port = 3; // 用于建立连接的端口
+     uint32 target_uid = 4; // 建立连接的目标uid
+}
+
+// 如果在线会立即通知对方 存在且离线 当设备上线时收到通知，上报后保存
+message p2pconnect_response {
+      bool is_online = 1; // 是否在线
+      bool is_exit   = 2; // 是否存在对应uid的账号 先在在线的sock列表中找，再在数据库中查找，找到为true
+}
+
+// 如果被连接者接受到时离线 则不用上报
+message p2p_post_ip_request {
+     uint32  sponsor_uid = 1; // 发起者uid
+     uint32  uid    = 2;
+     string  ip  = 3;
+     int32   port = 4;
+    bool    isReady = 5;
+}
+
+message p2p_post_ip_response {
+     bool is_suc  = 1;
+}
+

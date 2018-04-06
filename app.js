@@ -11,6 +11,7 @@ var HOST = '0.0.0.0';
 var PORT = 6969;
 var server = net.createServer();
 server.listen(PORT, HOST);
+logger.info("server listen on " + PORT + HOST);
 server.on('connection', function(sock) {
 
     logger.info('CONNECTED: ' + sock.remoteAddress +':'+ sock.remotePort);

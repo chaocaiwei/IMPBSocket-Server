@@ -2,7 +2,7 @@
 var logger = require('./log').logger('app');
 var net = require('net');
 var global = require("./global")
-var ProtoBuf = require("protobufjs");
+// var ProtoBuf = require("protobufjs");
 var commonRoute = require("./routes/commonRoute"),
     messageRoute = require("./routes/messageRoute"),
     notificationRoute = require("./routes/notificationRoute")

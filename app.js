@@ -7,11 +7,11 @@ var commonRoute = require("./routes/commonRoute"),
     messageRoute = require("./routes/messageRoute"),
     notificationRoute = require("./routes/notificationRoute")
 
-var HOST = '31.220.63.5';
+var HOST = '0.0.0.0';
 var PORT = 6969;
 var server = net.createServer();
 server.listen(PORT, HOST);
-logger.info("server listen on " + PORT + HOST);
+logger.info("server listen on "  + HOST + ":" + PORT);
 server.on('connection', function(sock) {
     logger.info('CONNECTED: ' + sock.remoteAddress +':'+ sock.remotePort);
     sock.on('data', function(data) {

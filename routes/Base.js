@@ -4,8 +4,8 @@
 
 
 var base = require("../impb/base_pb");
-var User = base.UserInfo;
-var IP   = base.IpInfo;
+var User = base.User_info;
+var IP   = base.Ip_info;
 
 // 从数据库拿到的user  转化为PB的user结构
 module.exports.builderFromUser = function (user) {

@@ -1,0 +1,4 @@
+"user_name","pwd","avarta_url",user_id,online,"token","socket_ip",port,"ip",sock_port,"sock_ip"
+"user","123456",NULL,1,0,"6079633_user","127.0.0.1",56741,"192.168.0.100",54203,NULL
+"user2","123456",NULL,2,0,"1393112_user2",NULL,NULL,NULL,NULL,NULL
+"user1","123456",NULL,3,0,"9768120_user1","192.168.0.101",56743,"192.168.0.101",50850,NULL

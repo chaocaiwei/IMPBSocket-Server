@@ -8,50 +8,73 @@ var connection = mysql.createConnection({
     host     : 'localhost',
     user     : 'root',
     password : '298136',
-    database : 'defult'
+    database : 'default',
+    useConnectionPooling: true
 });
 
 exports.latestUserId = function (handle) {
     connection.query('SELECT * FROM `users` WHERE user_id = (SELECT MAX(user_id) FROM `users`);', function (error, results, fields) {
-        if (error) print(error);
-        console.log('The solution is: ', results[0].solution);
-        var id = results[0].user_id;
-        handle(id);
-        logger.error(err)
+        if (error) {
+            logger.error(error);
+        } else{
+            var id = results[0].user_id;
+            console.log('sucess to fine latest user_id=', results[0].user_id);
+            handle(id);
+        }
+        connection.release();
     });
 }
 
 exports.insertLoginInfo = function (username,pwd,token,completion) {
-    // (`user_name`, `pwd`, `token`)
-
     var user = {
         "user_name" :username,
         "pwd":pwd,
         "token" : token
-    }
-
+    };
     connection.query('INSERT INTO users set ?  ',user, function (error, results, fields) {
-        logger.error(err)
-        if (completion) {
-            completion(error)
+        if(error){
+            logger.error(error);
+            if (completion) {
+                completion(error)
+            }
+        }else{
+            logger.info("insert user sucess user=" + user);
+            if (completion) {
+                completion(undefined)
+            }
         }
+        connection.release();
     });
 }
 
 
 exports.userById   = function (uid,completion) {
     connection.query("SELECT * FROM users WHERE user_id =?",[uid],function (err,rows) {
-        logger.error(err)
-        completion(rows,err);
+        if(err){
+            logger.error(err)
+            completion([],err);
+        }else{
+            logger.info("fine user sucess id="  + uid +   " users=" + rows)
+            completion(rows,undefined);
+        }
+        connection.release();
     })
 }
 
 exports.userWithName = function (name,completion) {
     connection.query("SELECT * FROM users WHERE user_name = ? ",[name],function (err,rows) {
-        logger.error(err)
-        if (completion){
-            completion(rows,err);
+        if (err){
+            logger.error(err)
+            if (completion){
+                completion([],err);
+            }
+        }else{
+            logger.info("fine user with name=" + name + " users=" + rows);
+            if (completion){
+                completion(rows,undefined);
+            }
         }
+        connection.release()
     })
 }
 
@@ -59,7 +82,10 @@ exports.updateUser = function (user) {
     connection.query("UPDATE users set ? where user_id =?",[user,user.user_id],function (err,rows) {
         if(err){
             logger.error(err)
+        }else {
+            logger.info("update user sucess user=" + user)
         }
+        connection.release();
     })
 }
 

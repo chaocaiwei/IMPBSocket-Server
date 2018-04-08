@@ -21,7 +21,7 @@ exports.latestUserId = function (handle) {
             console.log('sucess to fine latest user_id=', results[0].user_id);
             handle(id);
         }
-        connection.release();
+
     });
 }
 
@@ -38,12 +38,12 @@ exports.insertLoginInfo = function (username,pwd,token,completion) {
                 completion(error)
             }
         }else{
-            logger.info("insert user sucess user=" + user);
+            logger.info("insert user sucess user=" + user.toString());
             if (completion) {
                 completion(undefined)
             }
         }
-        connection.release();
+
     });
 }
 
@@ -54,10 +54,10 @@ exports.userById   = function (uid,completion) {
             logger.error(err)
             completion([],err);
         }else{
-            logger.info("fine user sucess id="  + uid +   " users=" + rows)
+            logger.info("fine user sucess id="  + uid +   " users=" + rows.toString())
             completion(rows,undefined);
         }
-        connection.release();
+
     })
 }
 
@@ -69,12 +69,12 @@ exports.userWithName = function (name,completion) {
                 completion([],err);
             }
         }else{
-            logger.info("fine user with name=" + name + " users=" + rows);
+            logger.info("fine user with name=" + name + " users=" + rows.toString());
             if (completion){
                 completion(rows,undefined);
             }
         }
-        connection.release()
+
     })
 }
 
@@ -83,9 +83,8 @@ exports.updateUser = function (user) {
         if(err){
             logger.error(err)
         }else {
-            logger.info("update user sucess user=" + user)
+            logger.info("update user sucess user=" + user.toString())
         }
-        connection.release();
     })
 }
 

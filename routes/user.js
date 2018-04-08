@@ -44,9 +44,9 @@ function handleLoginMsg(root,sock,compl) {
         }
 
         var curUser = user[0];
-        if (curUser.pwd !== pwd){
+        if (!(pwd == curUser.pwd)) {
             var newErr = new SocketError();
-            newErr.setMsg("密码错误")
+            newErr.setMsg("密码错误 pwd=" + pwd + " user.pwd=" + curUser.pwd )
             logger.error("login  error " + "密码错误");
             if(compl){
                 compl(false,newErr)
@@ -58,7 +58,7 @@ function handleLoginMsg(root,sock,compl) {
         var port = req.getPort();
         var sock_ip = sock.remoteAddress;
         var sock_port = sock.remotePort;
-        var user = {
+        var new_user = {
             "user_id":curUser.user_id,
             "online":0,
             "socket_ip":sock_ip,
@@ -67,16 +67,15 @@ function handleLoginMsg(root,sock,compl) {
             "ip":ip
         };
 
-        db.updateUser(user);
-        global.cachSock(sock,user)
-        var res = new LoginRespon()
+        db.updateUser(new_user);
+        global.cachSock(sock,new_user);
+        var res = new LoginRespon();
         res.setToken(curUser.token);
         res.setUid(curUser.user_id);
-        logger.info("login  sucess " + "token=" + res.getToken() + " uid=" + res.getUid() );
+        logger.info("login  success " + "token=" + res.getToken() + " uid=" + res.getUid() );
         if(compl){
             compl(true,res,curUser.user_id)
         }
-
 
     })
 }

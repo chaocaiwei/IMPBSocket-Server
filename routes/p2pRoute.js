@@ -72,7 +72,7 @@ function handleConnectReq(body,sock,completion) {
                     var rec = new P2p_receive_connect_notification();
                     rec.setSponsorUid(req.user_id);
                     rec.setSponsorIpInfo(sponsor_ip);
-                    rec.setTargetIpInfo(target_ip);
+                    rec.setTargetInfo(target_ip);
                     var notify = new Notification();
                     notify.setType(Noti_type.ENUM_NOTIFICATION_TYPE_P2P_RECEIVE_CONNECT_REQ);
                     var tbody  = new Buffer(rec.serializeBinary());

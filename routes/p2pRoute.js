@@ -70,16 +70,15 @@ function handleConnectReq(body,sock,completion) {
                     completion(respond);
 
                     var rec = new P2p_receive_connect_notification();
-                    rec.setSponsorUid(req.user_id);
+                    rec.setSponsorUid(req.getUid());
                     rec.setSponsorIpInfo(sponsor_ip);
                     rec.setTargetInfo(target_ip);
                     var notify = new Notification();
                     notify.setType(Noti_type.ENUM_NOTIFICATION_TYPE_P2P_RECEIVE_CONNECT_REQ);
-                    var tbody  = new Buffer(rec.serializeBinary());
+                    var tbody  = rec.serializeBinary();
                     notify.setTargetUid(uid);
                     notify.setBody(tbody);
-                    var notiBody = new Buffer(notify.serializeBinary());
-                    app.wridataWithSock(target_sock,4,notiBody);
+                    app.wridataWithSock(target_sock,4,notify.serializeBinary());
                     logger.info("p2p success to sent notification target is " + uid + " "+ target_sock.remoteAddress +':'+ target_sock.remotePort)
 
                 }else{

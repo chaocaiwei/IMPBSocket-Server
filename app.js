@@ -7,6 +7,22 @@ var commonRoute = require("./routes/commonRoute"),
     messageRoute = require("./routes/messageRoute"),
     notificationRoute = require("./routes/notificationRoute")
 
+var dgram = require('dgram');
+var serverSocket = dgram.createSocket('udp4');
+serverSocket.bind(25668);
+serverSocket.on('message', function(msg, rinfo){
+    logger.info('recv %s(%d bytes) from client %s:%d\n', msg, msg.length, rinfo.address, rinfo.port);
+    serverSocket.send(msg, 0, msg.length, rinfo.port, rinfo.address);
+});
+serverSocket.on('error', function(err){
+    logger.info('error, msg - %s, stack - %s\n', err.message, err.stack);
+});
+
+serverSocket.on('listening', function(){
+    logger.info("echo server is listening on port 2566.");
+});
+
+
 var HOST = '0.0.0.0';
 var PORT = 6969;
 var server = net.createServer();
@@ -15,7 +31,7 @@ logger.info("server listen on "  + HOST + ":" + PORT);
 server.on('connection', function(sock) {
     logger.info('CONNECTED: ' + sock.remoteAddress +':'+ sock.remotePort);
     sock.on('data', function(data) {
-        logger.info("receive data " + data)
+
         var tempData = new Buffer(data)
         while (tempData.length){
             var header = data.slice(0,8)

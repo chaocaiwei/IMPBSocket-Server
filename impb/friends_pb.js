@@ -1112,7 +1112,7 @@ proto.user_info_res.prototype.toObject = function(opt_includeInstance) {
  */
 proto.user_info_res.toObject = function(includeInstance, msg) {
   var f, obj = {
-    userInfo: (f = msg.getUserInfo()) && base_pb.user_info.toObject(includeInstance, f)
+    userInfo: (f = msg.getUserInfo()) && base_pb.User_info.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -1150,8 +1150,8 @@ proto.user_info_res.deserializeBinaryFromReader = function(msg, reader) {
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new base_pb.user_info;
-      reader.readMessage(value,base_pb.user_info.deserializeBinaryFromReader);
+      var value = new base_pb.User_info;
+      reader.readMessage(value,base_pb.User_info.deserializeBinaryFromReader);
       msg.setUserInfo(value);
       break;
     default:
@@ -1188,23 +1188,23 @@ proto.user_info_res.serializeBinaryToWriter = function(message, writer) {
     writer.writeMessage(
       1,
       f,
-      base_pb.user_info.serializeBinaryToWriter
+      base_pb.User_info.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional user_info user_info = 1;
- * @return {?proto.user_info}
+ * optional User_info user_info = 1;
+ * @return {?proto.User_info}
  */
 proto.user_info_res.prototype.getUserInfo = function() {
-  return /** @type{?proto.user_info} */ (
-    jspb.Message.getWrapperField(this, base_pb.user_info, 1));
+  return /** @type{?proto.User_info} */ (
+    jspb.Message.getWrapperField(this, base_pb.User_info, 1));
 };
 
 
-/** @param {?proto.user_info|undefined} value */
+/** @param {?proto.User_info|undefined} value */
 proto.user_info_res.prototype.setUserInfo = function(value) {
   jspb.Message.setWrapperField(this, 1, value);
 };
@@ -1271,7 +1271,7 @@ proto.user_info_list_res.prototype.toObject = function(opt_includeInstance) {
  */
 proto.user_info_list_res.toObject = function(includeInstance, msg) {
   var f, obj = {
-    userList: (f = msg.getUserList()) && base_pb.user_info.toObject(includeInstance, f)
+    userList: (f = msg.getUserList()) && base_pb.User_info.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -1309,8 +1309,8 @@ proto.user_info_list_res.deserializeBinaryFromReader = function(msg, reader) {
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new base_pb.user_info;
-      reader.readMessage(value,base_pb.user_info.deserializeBinaryFromReader);
+      var value = new base_pb.User_info;
+      reader.readMessage(value,base_pb.User_info.deserializeBinaryFromReader);
       msg.setUserList(value);
       break;
     default:
@@ -1347,23 +1347,23 @@ proto.user_info_list_res.serializeBinaryToWriter = function(message, writer) {
     writer.writeMessage(
       1,
       f,
-      base_pb.user_info.serializeBinaryToWriter
+      base_pb.User_info.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional user_info user_list = 1;
- * @return {?proto.user_info}
+ * optional User_info user_list = 1;
+ * @return {?proto.User_info}
  */
 proto.user_info_list_res.prototype.getUserList = function() {
-  return /** @type{?proto.user_info} */ (
-    jspb.Message.getWrapperField(this, base_pb.user_info, 1));
+  return /** @type{?proto.User_info} */ (
+    jspb.Message.getWrapperField(this, base_pb.User_info, 1));
 };
 
 
-/** @param {?proto.user_info|undefined} value */
+/** @param {?proto.User_info|undefined} value */
 proto.user_info_list_res.prototype.setUserList = function(value) {
   jspb.Message.setWrapperField(this, 1, value);
 };

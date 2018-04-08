@@ -18,10 +18,10 @@ var Noti_build = require("../impb/notification_pb"),
     Noti_type     = Noti_build.enum_notification_type,
     P2p_receive_connect_notification   = Noti_build.p2p_receive_connect_notification,
     P2p_connect_ready_notification   = Noti_build.p2p_connect_ready_notification;
+var Base = require("./Base");
 
 
-
-exports.route = function (body,completion){
+exports.route = function (body,sock,completion){
     try {
         var p2p =  P2p.deserializeBinary(body);
         var sub = p2p.getBody()
@@ -29,7 +29,7 @@ exports.route = function (body,completion){
 
         switch(p2p.getType())  {
             case Type.ENUM_P2P_TYPE_CONNECT_REQUEST:
-                handleConnectReq(sub,function (res) {
+                handleConnectReq(sub,sock,function (res) {
                     completion(true,res)
                 });
                 break;
@@ -48,44 +48,54 @@ exports.route = function (body,completion){
 };
 
 
-function handleConnectReq(body,completion) {
+function handleConnectReq(body,sock,completion) {
     try {
         var req = P2pconnect_request.deserializeBinary(body);
         var uid = req.getTargetUid();
         var respond = new P2pconnect_response();
-        var sock  = global.sockWithUid(uid);
+        var target_sock  = global.sockWithUid(uid);
         logger.info("recieve p2p connect req from=" + req.uid + " to=" + uid + " ip=" +  req.ip + " port=" + req.port );
-        if(sock){
-            
-            respond.setIsOnline(true);
-            respond.setIsExit(true);
-            completion(respond);
+        db.userById(uid,function (rows,err) {
+            if(rows && rows.count > 0){
+                var user = rows[0];
+                if (target_sock){
 
-            var respond = new P2p_receive_connect_notification();
-            respond.setSponsorUid(req.user_id);
-            respond.setSponsorIp(req.ip);
-            respond.setSponsorPort(req.port);
-            var notify = new Notification();
-            notify.setType(Noti_type.ENUM_NOTIFICATION_TYPE_P2P_RECEIVE_CONNECT_REQ)
-            var tbody  = new Buffer(respond.serializeBinary());
-            notify.setTargetUid(uid)
-            notify.getBody(tbody)
-            app.wridataWithSock(sock,4,notify.serializeBinary());
-            logger.info("p2p succuss to sent notification target is " + uid + " "+ sock.remoteAddress +':'+ sock.remotePort)
-        }else{
-            db.userById(uid,function (rows,err) {
-                if(rows && rows.count > 0){
-                    respond.setIsOnline(false);
+                    var sponsor_ip = Base.buildIpInfo(req.ip,req.port,sock.remoteAddress,sock.remotePort);
+                    var target_ip  = Base.buildIpInfo(user.ip,user.port,target_sock.remoteAddress,target_sock.remotePort);
+
+                    respond.setIsOnline(true);
                     respond.setIsExit(true);
-                    logger.info("recieve p2p connect req false user is offline");
+                    respond.setSponsorIpInfo(sponsor_ip);
+                    respond.setTargetIpInfo(target_ip);
+                    completion(respond);
+
+                    var rec = new P2p_receive_connect_notification();
+                    rec.setSponsorUid(req.user_id);
+                    rec.setSponsorIpInfo(sponsor_ip);
+                    rec.setTargetIpInfo(target_ip);
+                    var notify = new Notification();
+                    notify.setType(Noti_type.ENUM_NOTIFICATION_TYPE_P2P_RECEIVE_CONNECT_REQ);
+                    var tbody  = new Buffer(rec.serializeBinary());
+                    notify.setTargetUid(uid);
+                    notify.setBody(tbody);
+                    app.wridataWithSock(target_sock,4,notify.serializeBinary());
+                    logger.info("p2p success to sent notification target is " + uid + " "+ target_sock.remoteAddress +':'+ target_sock.remotePort)
+
                 }else{
                     respond.setIsOnline(false);
-                    respond.setIsExit(false);
-                    logger.info("recieve p2p connect req user is not exit");
+                    respond.setIsExit(true);
+                    logger.info("receive p2p connect req false user is offline");
+                    completion(respond);
                 }
+            }else{
+                respond.setIsOnline(false);
+                respond.setIsExit(false);
+                logger.info("receive p2p connect req user is not exit");
                 completion(respond);
-            })
-        }
+            }
+
+        })
+
     }catch (err){
         logger.error(err);
     }

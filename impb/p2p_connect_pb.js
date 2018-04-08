@@ -11,6 +11,7 @@ var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
 
+var base_pb = require('./base_pb.js');
 goog.exportSymbol('proto.enum_p2p_type', null, global);
 goog.exportSymbol('proto.p2p_connect', null, global);
 goog.exportSymbol('proto.p2p_post_ip_request', null, global);
@@ -258,9 +259,7 @@ proto.p2pconnect_request.prototype.toObject = function(opt_includeInstance) {
 proto.p2pconnect_request.toObject = function(includeInstance, msg) {
   var f, obj = {
     uid: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    ip: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    port: jspb.Message.getFieldWithDefault(msg, 3, 0),
-    targetUid: jspb.Message.getFieldWithDefault(msg, 4, 0)
+    targetUid: jspb.Message.getFieldWithDefault(msg, 2, 0)
   };
 
   if (includeInstance) {
@@ -302,14 +301,6 @@ proto.p2pconnect_request.deserializeBinaryFromReader = function(msg, reader) {
       msg.setUid(value);
       break;
     case 2:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setIp(value);
-      break;
-    case 3:
-      var value = /** @type {number} */ (reader.readInt32());
-      msg.setPort(value);
-      break;
-    case 4:
       var value = /** @type {number} */ (reader.readUint32());
       msg.setTargetUid(value);
       break;
@@ -349,24 +340,10 @@ proto.p2pconnect_request.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getIp();
-  if (f.length > 0) {
-    writer.writeString(
-      2,
-      f
-    );
-  }
-  f = message.getPort();
-  if (f !== 0) {
-    writer.writeInt32(
-      3,
-      f
-    );
-  }
   f = message.getTargetUid();
   if (f !== 0) {
     writer.writeUint32(
-      4,
+      2,
       f
     );
   }
@@ -389,47 +366,17 @@ proto.p2pconnect_request.prototype.setUid = function(value) {
 
 
 /**
- * optional string ip = 2;
- * @return {string}
- */
-proto.p2pconnect_request.prototype.getIp = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
-};
-
-
-/** @param {string} value */
-proto.p2pconnect_request.prototype.setIp = function(value) {
-  jspb.Message.setProto3StringField(this, 2, value);
-};
-
-
-/**
- * optional int32 port = 3;
- * @return {number}
- */
-proto.p2pconnect_request.prototype.getPort = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
-};
-
-
-/** @param {number} value */
-proto.p2pconnect_request.prototype.setPort = function(value) {
-  jspb.Message.setProto3IntField(this, 3, value);
-};
-
-
-/**
- * optional uint32 target_uid = 4;
+ * optional uint32 target_uid = 2;
  * @return {number}
  */
 proto.p2pconnect_request.prototype.getTargetUid = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
 /** @param {number} value */
 proto.p2pconnect_request.prototype.setTargetUid = function(value) {
-  jspb.Message.setProto3IntField(this, 4, value);
+  jspb.Message.setProto3IntField(this, 2, value);
 };
 
 
@@ -481,7 +428,9 @@ proto.p2pconnect_response.prototype.toObject = function(opt_includeInstance) {
 proto.p2pconnect_response.toObject = function(includeInstance, msg) {
   var f, obj = {
     isOnline: jspb.Message.getFieldWithDefault(msg, 1, false),
-    isExit: jspb.Message.getFieldWithDefault(msg, 2, false)
+    isExit: jspb.Message.getFieldWithDefault(msg, 2, false),
+    sponsorIpInfo: (f = msg.getSponsorIpInfo()) && base_pb.Ip_info.toObject(includeInstance, f),
+    targetIpInfo: (f = msg.getTargetIpInfo()) && base_pb.Ip_info.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -526,6 +475,16 @@ proto.p2pconnect_response.deserializeBinaryFromReader = function(msg, reader) {
       var value = /** @type {boolean} */ (reader.readBool());
       msg.setIsExit(value);
       break;
+    case 3:
+      var value = new base_pb.Ip_info;
+      reader.readMessage(value,base_pb.Ip_info.deserializeBinaryFromReader);
+      msg.setSponsorIpInfo(value);
+      break;
+    case 4:
+      var value = new base_pb.Ip_info;
+      reader.readMessage(value,base_pb.Ip_info.deserializeBinaryFromReader);
+      msg.setTargetIpInfo(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -569,6 +528,22 @@ proto.p2pconnect_response.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
+  f = message.getSponsorIpInfo();
+  if (f != null) {
+    writer.writeMessage(
+      3,
+      f,
+      base_pb.Ip_info.serializeBinaryToWriter
+    );
+  }
+  f = message.getTargetIpInfo();
+  if (f != null) {
+    writer.writeMessage(
+      4,
+      f,
+      base_pb.Ip_info.serializeBinaryToWriter
+    );
+  }
 };
 
 
@@ -603,6 +578,66 @@ proto.p2pconnect_response.prototype.getIsExit = function() {
 /** @param {boolean} value */
 proto.p2pconnect_response.prototype.setIsExit = function(value) {
   jspb.Message.setProto3BooleanField(this, 2, value);
+};
+
+
+/**
+ * optional Ip_info sponsor_ip_info = 3;
+ * @return {?proto.Ip_info}
+ */
+proto.p2pconnect_response.prototype.getSponsorIpInfo = function() {
+  return /** @type{?proto.Ip_info} */ (
+    jspb.Message.getWrapperField(this, base_pb.Ip_info, 3));
+};
+
+
+/** @param {?proto.Ip_info|undefined} value */
+proto.p2pconnect_response.prototype.setSponsorIpInfo = function(value) {
+  jspb.Message.setWrapperField(this, 3, value);
+};
+
+
+proto.p2pconnect_response.prototype.clearSponsorIpInfo = function() {
+  this.setSponsorIpInfo(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {!boolean}
+ */
+proto.p2pconnect_response.prototype.hasSponsorIpInfo = function() {
+  return jspb.Message.getField(this, 3) != null;
+};
+
+
+/**
+ * optional Ip_info target_ip_info = 4;
+ * @return {?proto.Ip_info}
+ */
+proto.p2pconnect_response.prototype.getTargetIpInfo = function() {
+  return /** @type{?proto.Ip_info} */ (
+    jspb.Message.getWrapperField(this, base_pb.Ip_info, 4));
+};
+
+
+/** @param {?proto.Ip_info|undefined} value */
+proto.p2pconnect_response.prototype.setTargetIpInfo = function(value) {
+  jspb.Message.setWrapperField(this, 4, value);
+};
+
+
+proto.p2pconnect_response.prototype.clearTargetIpInfo = function() {
+  this.setTargetIpInfo(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {!boolean}
+ */
+proto.p2pconnect_response.prototype.hasTargetIpInfo = function() {
+  return jspb.Message.getField(this, 4) != null;
 };
 
 
@@ -655,8 +690,7 @@ proto.p2p_post_ip_request.toObject = function(includeInstance, msg) {
   var f, obj = {
     sponsorUid: jspb.Message.getFieldWithDefault(msg, 1, 0),
     uid: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    ip: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    port: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    ipInfo: (f = msg.getIpInfo()) && base_pb.Ip_info.toObject(includeInstance, f),
     isready: jspb.Message.getFieldWithDefault(msg, 5, false)
   };
 
@@ -703,12 +737,9 @@ proto.p2p_post_ip_request.deserializeBinaryFromReader = function(msg, reader) {
       msg.setUid(value);
       break;
     case 3:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setIp(value);
-      break;
-    case 4:
-      var value = /** @type {number} */ (reader.readInt32());
-      msg.setPort(value);
+      var value = new base_pb.Ip_info;
+      reader.readMessage(value,base_pb.Ip_info.deserializeBinaryFromReader);
+      msg.setIpInfo(value);
       break;
     case 5:
       var value = /** @type {boolean} */ (reader.readBool());
@@ -757,18 +788,12 @@ proto.p2p_post_ip_request.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getIp();
-  if (f.length > 0) {
-    writer.writeString(
+  f = message.getIpInfo();
+  if (f != null) {
+    writer.writeMessage(
       3,
-      f
-    );
-  }
-  f = message.getPort();
-  if (f !== 0) {
-    writer.writeInt32(
-      4,
-      f
+      f,
+      base_pb.Ip_info.serializeBinaryToWriter
     );
   }
   f = message.getIsready();
@@ -812,32 +837,32 @@ proto.p2p_post_ip_request.prototype.setUid = function(value) {
 
 
 /**
- * optional string ip = 3;
- * @return {string}
+ * optional Ip_info ip_info = 3;
+ * @return {?proto.Ip_info}
  */
-proto.p2p_post_ip_request.prototype.getIp = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+proto.p2p_post_ip_request.prototype.getIpInfo = function() {
+  return /** @type{?proto.Ip_info} */ (
+    jspb.Message.getWrapperField(this, base_pb.Ip_info, 3));
 };
 
 
-/** @param {string} value */
-proto.p2p_post_ip_request.prototype.setIp = function(value) {
-  jspb.Message.setProto3StringField(this, 3, value);
+/** @param {?proto.Ip_info|undefined} value */
+proto.p2p_post_ip_request.prototype.setIpInfo = function(value) {
+  jspb.Message.setWrapperField(this, 3, value);
+};
+
+
+proto.p2p_post_ip_request.prototype.clearIpInfo = function() {
+  this.setIpInfo(undefined);
 };
 
 
 /**
- * optional int32 port = 4;
- * @return {number}
+ * Returns whether this field is set.
+ * @return {!boolean}
  */
-proto.p2p_post_ip_request.prototype.getPort = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
-};
-
-
-/** @param {number} value */
-proto.p2p_post_ip_request.prototype.setPort = function(value) {
-  jspb.Message.setProto3IntField(this, 4, value);
+proto.p2p_post_ip_request.prototype.hasIpInfo = function() {
+  return jspb.Message.getField(this, 3) != null;
 };
 
 

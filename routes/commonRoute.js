@@ -7,7 +7,7 @@ var loginRoute = require("./user"),
     friendRoute = require("./friendRoute"),
     messageRoute = require("./pullMessageRoute"),
     p2pRoute     = require("./p2pRoute");
-var ProtoBuf = require("protobufjs");
+
 var builder = require("../impb/common_pb"),
     Common = builder.Common;
     MethodType = builder.Common_method;
@@ -61,7 +61,7 @@ exports.route = function(header,body,sock){
                 friendRoute.route(common.getBody(),handle);
                 break;
             case MethodType.COMMON_METHOD_P2P_CONNECT:
-                p2pRoute.route(common.getBody(),handle);
+                p2pRoute.route(common.getBody(),sock,handle);
                 break;
         }
     }catch (err){

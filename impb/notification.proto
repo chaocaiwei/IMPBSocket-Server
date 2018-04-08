@@ -1,6 +1,6 @@
 
 syntax = "proto3";
-
+import "base.proto";
 
 enum enum_notification_type {
     enum_notification_type_addfriend_req = 0;
@@ -10,20 +10,17 @@ enum enum_notification_type {
     enum_notification_type_p2p_connect_ready  = 5;
 }
 
-
-
 message  Notification_msg {
-     enum_notification_type type  = 1;
+    enum_notification_type type  = 1;
     uint32 target_uid   = 2;
     bytes  body   = 3;
 }
 
-
 // 收到其他终端的p2p连接请求 收到后启动一个端口监听
 message p2p_receive_connect_notification {
      uint32   sponsor_uid  = 1; // 发起者uid
-     string   sponsor_ip   = 2; // 发起者的ip
-     int32    sponsor_port = 3; // 发起者的端口
+     Ip_info  sponsor_ip_info = 2; // 发起者的ip信息
+     Ip_info  target_info  = 3;  // 自己的ip信息
 }
 
 // 对方准备就绪的时候 发起方收到该通知

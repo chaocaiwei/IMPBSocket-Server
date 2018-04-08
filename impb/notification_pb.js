@@ -11,6 +11,7 @@ var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
 
+var base_pb = require('./base_pb.js');
 goog.exportSymbol('proto.Notification_msg', null, global);
 goog.exportSymbol('proto.enum_notification_type', null, global);
 goog.exportSymbol('proto.p2p_connect_ready_notification', null, global);
@@ -283,8 +284,8 @@ proto.p2p_receive_connect_notification.prototype.toObject = function(opt_include
 proto.p2p_receive_connect_notification.toObject = function(includeInstance, msg) {
   var f, obj = {
     sponsorUid: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    sponsorIp: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    sponsorPort: jspb.Message.getFieldWithDefault(msg, 3, 0)
+    sponsorIpInfo: (f = msg.getSponsorIpInfo()) && base_pb.Ip_info.toObject(includeInstance, f),
+    targetInfo: (f = msg.getTargetInfo()) && base_pb.Ip_info.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -326,12 +327,14 @@ proto.p2p_receive_connect_notification.deserializeBinaryFromReader = function(ms
       msg.setSponsorUid(value);
       break;
     case 2:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setSponsorIp(value);
+      var value = new base_pb.Ip_info;
+      reader.readMessage(value,base_pb.Ip_info.deserializeBinaryFromReader);
+      msg.setSponsorIpInfo(value);
       break;
     case 3:
-      var value = /** @type {number} */ (reader.readInt32());
-      msg.setSponsorPort(value);
+      var value = new base_pb.Ip_info;
+      reader.readMessage(value,base_pb.Ip_info.deserializeBinaryFromReader);
+      msg.setTargetInfo(value);
       break;
     default:
       reader.skipField();
@@ -369,18 +372,20 @@ proto.p2p_receive_connect_notification.serializeBinaryToWriter = function(messag
       f
     );
   }
-  f = message.getSponsorIp();
-  if (f.length > 0) {
-    writer.writeString(
+  f = message.getSponsorIpInfo();
+  if (f != null) {
+    writer.writeMessage(
       2,
-      f
+      f,
+      base_pb.Ip_info.serializeBinaryToWriter
     );
   }
-  f = message.getSponsorPort();
-  if (f !== 0) {
-    writer.writeInt32(
+  f = message.getTargetInfo();
+  if (f != null) {
+    writer.writeMessage(
       3,
-      f
+      f,
+      base_pb.Ip_info.serializeBinaryToWriter
     );
   }
 };
@@ -402,32 +407,62 @@ proto.p2p_receive_connect_notification.prototype.setSponsorUid = function(value)
 
 
 /**
- * optional string sponsor_ip = 2;
- * @return {string}
+ * optional Ip_info sponsor_ip_info = 2;
+ * @return {?proto.Ip_info}
  */
-proto.p2p_receive_connect_notification.prototype.getSponsorIp = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+proto.p2p_receive_connect_notification.prototype.getSponsorIpInfo = function() {
+  return /** @type{?proto.Ip_info} */ (
+    jspb.Message.getWrapperField(this, base_pb.Ip_info, 2));
 };
 
 
-/** @param {string} value */
-proto.p2p_receive_connect_notification.prototype.setSponsorIp = function(value) {
-  jspb.Message.setProto3StringField(this, 2, value);
+/** @param {?proto.Ip_info|undefined} value */
+proto.p2p_receive_connect_notification.prototype.setSponsorIpInfo = function(value) {
+  jspb.Message.setWrapperField(this, 2, value);
+};
+
+
+proto.p2p_receive_connect_notification.prototype.clearSponsorIpInfo = function() {
+  this.setSponsorIpInfo(undefined);
 };
 
 
 /**
- * optional int32 sponsor_port = 3;
- * @return {number}
+ * Returns whether this field is set.
+ * @return {!boolean}
  */
-proto.p2p_receive_connect_notification.prototype.getSponsorPort = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+proto.p2p_receive_connect_notification.prototype.hasSponsorIpInfo = function() {
+  return jspb.Message.getField(this, 2) != null;
 };
 
 
-/** @param {number} value */
-proto.p2p_receive_connect_notification.prototype.setSponsorPort = function(value) {
-  jspb.Message.setProto3IntField(this, 3, value);
+/**
+ * optional Ip_info target_info = 3;
+ * @return {?proto.Ip_info}
+ */
+proto.p2p_receive_connect_notification.prototype.getTargetInfo = function() {
+  return /** @type{?proto.Ip_info} */ (
+    jspb.Message.getWrapperField(this, base_pb.Ip_info, 3));
+};
+
+
+/** @param {?proto.Ip_info|undefined} value */
+proto.p2p_receive_connect_notification.prototype.setTargetInfo = function(value) {
+  jspb.Message.setWrapperField(this, 3, value);
+};
+
+
+proto.p2p_receive_connect_notification.prototype.clearTargetInfo = function() {
+  this.setTargetInfo(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {!boolean}
+ */
+proto.p2p_receive_connect_notification.prototype.hasTargetInfo = function() {
+  return jspb.Message.getField(this, 3) != null;
 };
 
 

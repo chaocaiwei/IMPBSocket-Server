@@ -16,7 +16,7 @@ var ErrorBuilder = require("../impb/error_pb");
 var SocketError    = ErrorBuilder.Error;
 var db = require("../dataBase");
 var global = require("../global");
-
+var Base   = require("./Base");
 
 function handleLoginMsg(root,sock,compl) {
     var req =  LoginReq.deserializeBinary(root.getBody()) ;
@@ -132,11 +132,26 @@ function  handleLogoutMsg(root,compl) {
 
 }
 
+function handleUserInfo(body,compl){
+    var req = LoginBuilder.UserInfoRequest.deserializeBinary(body.getBody());
+    var uid = req.getUid()
+    // TODO
+    db.userById(uid,function (err,rows) {
+        if(err){
+            var errRes = new SocketError();
+            errRes.setMsg(err + "");
+            compl(false,errRes)
+        }else{
+            var response = new LoginBuilder.UserInfoResponse();
+            var uerInfo = Base.builderFromUser(rows[0]);
+            response.setUserInfo(uerInfo);
+        }
+    })
+}
+
 
 exports.route = function (root,sock,completion){
-
     var user =  User_msg.deserializeBinary(root);
-
     switch(user.getCmd())  {
         case User_cmd.USER_CMD_LOGIN:
             handleLoginMsg(user,sock,completion);
@@ -147,5 +162,8 @@ exports.route = function (root,sock,completion){
         case User_cmd.USER_CMD_LOGOUT:
             handleLogoutMsg(user,completion);
             break;
+        case User_cmd.USER_CMD_USER_INFO:
+            handleUserInfo(user,completion);
+            break
     }
 };

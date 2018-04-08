@@ -1353,8 +1353,8 @@ proto.C2C_msg.toObject = function(includeInstance, msg) {
   var f, obj = {
     from: jspb.Message.getFieldWithDefault(msg, 1, 0),
     to: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    fromInfo: (f = msg.getFromInfo()) && base_pb.user_info.toObject(includeInstance, f),
-    toInfo: (f = msg.getToInfo()) && base_pb.user_info.toObject(includeInstance, f),
+    fromInfo: (f = msg.getFromInfo()) && base_pb.User_info.toObject(includeInstance, f),
+    toInfo: (f = msg.getToInfo()) && base_pb.User_info.toObject(includeInstance, f),
     type: jspb.Message.getFieldWithDefault(msg, 5, 0),
     content: msg.getContent_asB64(),
     ext: (f = msg.getExt()) && base_pb.ext_key_info.toObject(includeInstance, f)
@@ -1403,13 +1403,13 @@ proto.C2C_msg.deserializeBinaryFromReader = function(msg, reader) {
       msg.setTo(value);
       break;
     case 3:
-      var value = new base_pb.user_info;
-      reader.readMessage(value,base_pb.user_info.deserializeBinaryFromReader);
+      var value = new base_pb.User_info;
+      reader.readMessage(value,base_pb.User_info.deserializeBinaryFromReader);
       msg.setFromInfo(value);
       break;
     case 4:
-      var value = new base_pb.user_info;
-      reader.readMessage(value,base_pb.user_info.deserializeBinaryFromReader);
+      var value = new base_pb.User_info;
+      reader.readMessage(value,base_pb.User_info.deserializeBinaryFromReader);
       msg.setToInfo(value);
       break;
     case 5:
@@ -1473,7 +1473,7 @@ proto.C2C_msg.serializeBinaryToWriter = function(message, writer) {
     writer.writeMessage(
       3,
       f,
-      base_pb.user_info.serializeBinaryToWriter
+      base_pb.User_info.serializeBinaryToWriter
     );
   }
   f = message.getToInfo();
@@ -1481,7 +1481,7 @@ proto.C2C_msg.serializeBinaryToWriter = function(message, writer) {
     writer.writeMessage(
       4,
       f,
-      base_pb.user_info.serializeBinaryToWriter
+      base_pb.User_info.serializeBinaryToWriter
     );
   }
   f = message.getType();
@@ -1540,16 +1540,16 @@ proto.C2C_msg.prototype.setTo = function(value) {
 
 
 /**
- * optional user_info from_info = 3;
- * @return {?proto.user_info}
+ * optional User_info from_info = 3;
+ * @return {?proto.User_info}
  */
 proto.C2C_msg.prototype.getFromInfo = function() {
-  return /** @type{?proto.user_info} */ (
-    jspb.Message.getWrapperField(this, base_pb.user_info, 3));
+  return /** @type{?proto.User_info} */ (
+    jspb.Message.getWrapperField(this, base_pb.User_info, 3));
 };
 
 
-/** @param {?proto.user_info|undefined} value */
+/** @param {?proto.User_info|undefined} value */
 proto.C2C_msg.prototype.setFromInfo = function(value) {
   jspb.Message.setWrapperField(this, 3, value);
 };
@@ -1570,16 +1570,16 @@ proto.C2C_msg.prototype.hasFromInfo = function() {
 
 
 /**
- * optional user_info to_info = 4;
- * @return {?proto.user_info}
+ * optional User_info to_info = 4;
+ * @return {?proto.User_info}
  */
 proto.C2C_msg.prototype.getToInfo = function() {
-  return /** @type{?proto.user_info} */ (
-    jspb.Message.getWrapperField(this, base_pb.user_info, 4));
+  return /** @type{?proto.User_info} */ (
+    jspb.Message.getWrapperField(this, base_pb.User_info, 4));
 };
 
 
-/** @param {?proto.user_info|undefined} value */
+/** @param {?proto.User_info|undefined} value */
 proto.C2C_msg.prototype.setToInfo = function(value) {
   jspb.Message.setWrapperField(this, 4, value);
 };

@@ -53,8 +53,8 @@ message Group_info {
 message C2C_msg {
 	 int32 from = 1;
 	 int32 to  = 2;
-	user_info from_info   = 3;
-	user_info to_info = 4;
+	 User_info from_info   = 3;
+	 User_info to_info = 4;
 	 enum_msg_content_type type = 5;
 	 bytes content = 6;
 	ext_key_info ext = 9;

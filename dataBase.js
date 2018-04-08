@@ -54,7 +54,7 @@ exports.userById   = function (uid,completion) {
             logger.error(err)
             completion([],err);
         }else{
-            logger.info("fine user sucess id="  + uid +   " users=" + rows.toString())
+            logger.info("fine user sucess id="  + uid +   " users=" + rows[0].toString())
             completion(rows,undefined);
         }
 

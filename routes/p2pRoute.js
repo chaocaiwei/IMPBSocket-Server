@@ -56,7 +56,7 @@ function handleConnectReq(body,sock,completion) {
         var target_sock  = global.sockWithUid(uid);
         logger.info("recieve p2p connect req from=" + req.uid + " to=" + uid + " ip=" +  req.ip + " port=" + req.port );
         db.userById(uid,function (rows,err) {
-            if(rows && rows.count > 0){
+            if(!err){
                 var user = rows[0];
                 if (target_sock){
 

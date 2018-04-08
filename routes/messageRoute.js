@@ -39,8 +39,8 @@ exports.route = function(body,completion){
 
 function completion(uids) {
     for (var i = 0;i < uids.length;i++ ){
-        var uid = uids[i]
-        var tsock = global.sockWithUid(uid)
+        var uid = uids[i];
+        var tsock = global.sockWithUid(uid);
         if(tsock){
             tsock.write(data)
         }else{

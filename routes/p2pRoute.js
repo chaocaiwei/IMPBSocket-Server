@@ -78,7 +78,8 @@ function handleConnectReq(body,sock,completion) {
                     var tbody  = new Buffer(rec.serializeBinary());
                     notify.setTargetUid(uid);
                     notify.setBody(tbody);
-                    app.wridataWithSock(target_sock,4,Buffer(notify.serializeBinary()));
+                    var notiBody = new Buffer(notify.serializeBinary());
+                    app.wridataWithSock(target_sock,4,notiBody);
                     logger.info("p2p success to sent notification target is " + uid + " "+ target_sock.remoteAddress +':'+ target_sock.remotePort)
 
                 }else{

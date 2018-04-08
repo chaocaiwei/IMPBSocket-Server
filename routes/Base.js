@@ -25,7 +25,7 @@ function ipInfoWith(ip,port,sock_ip,sock_port) {
     var info = new IP();
     info.setIp(ip);
     info.setPort(port);
-    info.setSockIP(sock_ip);
+    info.setSockIp(sock_ip);
     info.setSockPort(sock_port);
     return info;
 }
